@@ -2,7 +2,9 @@ require("neo-tree").setup({
     filesystem = {
         hijack_netrw_behavior = "open_current", -- Убрать конфликт с netrw
         use_libuv_file_watcher = true,
-        follow_current_file = true, -- Следить за текущим файлом
+        follow_current_file = {
+            enabled = true
+        }-- Следить за текущим файлом
     },
     event_handlers = {
         {
