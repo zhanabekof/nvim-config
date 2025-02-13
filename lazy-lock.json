@@ -1,4 +1,5 @@
 {
+  "dashboard-nvim": { "branch": "master", "commit": "000448d837f6e7a47f8f342f29526c4d7e49e9ce" },
   "hop.nvim": { "branch": "master", "commit": "1a1eceafe54b5081eae4cb91c723abd1d450f34b" },
   "lazy.nvim": { "branch": "main", "commit": "d8f26efd456190241afd1b0f5235fe6fdba13d4a" },
   "lazygit.nvim": { "branch": "main", "commit": "adc37c5a6d7d6e8d0a039f08f3c7837971a1c77a" },

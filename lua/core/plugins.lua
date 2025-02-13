@@ -23,6 +23,33 @@ vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
 require("lazy").setup({
+    {
+        "glepnir/dashboard-nvim",
+        event = "VimEnter",
+        config = function()
+            local db = require("dashboard")
+
+            db.setup({
+                theme = "hyper",
+                config = {
+                    header = {
+                        " █████╗ ██╗      ███╗   ███╗ █████╗ ████████╗",
+                        "██╔══██╗██║      ████╗ ████║██╔══██╗╚══██╔══╝",
+                        "███████║██║      ██╔████╔██║███████║   ██║   ",
+                        "██╔══██║██║      ██║╚██╔╝██║██╔══██║   ██║   ",
+                        "██║  ██║███████╗ ██║ ╚═╝ ██║██║  ██║   ██║   ",
+                        "╚═╝  ╚═╝╚══════╝ ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ",
+                    },
+                    week_header = { enable = false },
+                    shortcut = {
+                        { desc = "🔍 Find File", group = "@string", action = "Telescope find_files", key = "f" },
+                        { desc = "📂 Recent Files", group = "@string", action = "Telescope oldfiles", key = "r" },
+                        { desc = "🛠 Config", group = "DiagnosticHint", action = "edit $MYVIMRC", key = "c" },
+                    },
+                },
+            })
+        end,
+    },
     {'phaazon/hop.nvim'},
     {
         "nvim-neo-tree/neo-tree.nvim",
