@@ -51,25 +51,57 @@ require("lazy").setup({
         end
     },
     {
-        "nvim-telescope/telescope.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },  -- Важная зависимость
-        config = function()
-            require('telescope').setup{
-                defaults = {
-                    file_ignore_patterns = { "node_modules", ".git/" },
-                    mappings = {
-                        i = { ["<esc>"] = require("telescope.actions").close }
+        "kdheepak/lazygit.nvim",
+        lazy = true,
+        cmd = {
+            "LazyGit",
+            "LazyGitConfig",
+            "LazyGitCurrentFile",
+            "LazyGitFilter",
+            "LazyGitFilterCurrentFile",
+        },
+        -- optional for floating window border decoration
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        -- setting the keybinding for LazyGit with 'keys' is recommended in
+        -- order to load the plugin when the command is run for the first time
+        keys = {
+            { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+        }},
+        {
+            "nvim-telescope/telescope.nvim",
+            dependencies = { "nvim-lua/plenary.nvim" },  -- Важная зависимость
+            config = function()
+                require('telescope').setup{
+                    defaults = {
+                        file_ignore_patterns = { "node_modules", ".git/" },
+                        mappings = {
+                            i = { ["<esc>"] = require("telescope.actions").close }
+                        }
                     }
                 }
-            }
-        end
-    },
-    {
-        'nvim-lualine/lualine.nvim',
-        dependencies = { 'nvim-tree/nvim-web-devicons' },  -- Иконки для файлов
-        config = function()
-            require('lualine').setup()
-        end
-    }
+            end
+        },
+        {
+            'nvim-lualine/lualine.nvim',
+            dependencies = { 'nvim-tree/nvim-web-devicons' },  -- Иконки для файлов
+            config = function()
+                require('lualine').setup({
+                    sections = {
+                        lualine_a = {'mode'},
+                        lualine_b = {'branch'},
+                        lualine_c = {'filename'},
+                        lualine_x = {'encoding', 'fileformat', 'filetype'},
+                        lualine_y = {'progress'},
+                        lualine_z = {'location'}
+                    },
+                    tabline = {
+                        lualine_a = {'buffers'},
+                        lualine_b = {'tabs'},
+                    }
+                })
+            end
+        }
 
-})
+    })
