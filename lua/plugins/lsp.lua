@@ -1,21 +1,112 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities()
--- Sntup language servers.
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- Setup language servers.
 local lspconfig = require('lspconfig')
-lspconfig.pyright.setup {}
-lspconfig.prismals.setup {}
-lspconfig.golangci_lint_ls.setup {}
-lspconfig.rust_analyzer.setup {
+
+-- Настраиваем языковые серверы вручную, так как mason-lspconfig уже настроен в plugins.lua
+
+-- Настройка TypeScript Language Server
+lspconfig.ts_ls.setup({
+  capabilities = capabilities,
+  filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx" },
+  root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+  settings = {
+    typescript = {
+      inlayHints = {
+        includeInlayParameterNameHints = "all",
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      },
+    },
+    javascript = {
+      inlayHints = {
+        includeInlayParameterNameHints = "all",
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      }
+    }
+  }
+})
+
+-- Настройка eslint
+lspconfig.eslint.setup({
+  capabilities = capabilities,
+  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue" },
+  root_dir = lspconfig.util.root_pattern(".eslintrc", ".eslintrc.js", ".eslintrc.json"),
+  settings = {
+    codeAction = {
+      disableRuleComment = {
+        enable = true,
+        location = "separateLine"
+      },
+      showDocumentation = {
+        enable = true
+      }
+    },
+    codeActionOnSave = {
+      enable = false,
+      mode = "all"
+    },
+    format = true,
+    nodePath = "",
+    onIgnoredFiles = "off",
+    packageManager = "npm",
+    quiet = false,
+    rulesCustomizations = {},
+    run = "onType",
+    useESLintClass = false,
+    validate = "on",
+    workingDirectory = { mode = "location" }
+  },
+  on_attach = function(client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      command = "EslintFixAll",
+    })
+  end
+})
+
+-- Настройка golangci_lint_ls
+lspconfig.golangci_lint_ls.setup({
+  capabilities = capabilities
+})
+
+-- Настройка rust_analyzer
+lspconfig.rust_analyzer.setup({
   settings = {
     ['rust-analyzer'] = {
-            diagnostics = {
-                enable = true,
-                experimental = {
-                    enable = true,
-                },
-            },
+      diagnostics = {
+        enable = true,
+        experimental = {
+          enable = true,
+        },
+      },
     },
   },
-}
+})
+
+-- Настройка html
+lspconfig.html.setup({
+  capabilities = capabilities
+})
+
+-- Настройка cssls
+lspconfig.cssls.setup({
+  capabilities = capabilities
+})
+
+-- Настройка jsonls
+lspconfig.jsonls.setup({
+  capabilities = capabilities
+})
+
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<leader>lD', vim.diagnostic.open_float)
